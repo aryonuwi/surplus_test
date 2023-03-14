@@ -80,6 +80,22 @@ class CategoryController extends Controller
 
     public function Deleted($id, Request $request)
     {
+        $category = $this->MdlCategory->GetCategory($id);;
 
+        if(empty($category)){
+            return $this->responseFailed([],'notfound');
+        }
+
+        $data = [
+            'enabel'=>'0'
+        ];
+
+        $respons = $this->MdlCategory->UpdateData($id,$data);
+
+        if($respons){
+            return $this->responseSuccess(['Id'=>$id,'name'=>$category->name],'Success Deleted ','deleted');
+        }else{
+            return $this->responseFailed(['deleted failed']);
+        }
     }
 }

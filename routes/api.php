@@ -26,5 +26,6 @@ Route::prefix('v1')->group(function(){
         Route::get('/{id}',[CategoryController::class,'Singel']);
         Route::post('',[CategoryController::class,'Created']);
         Route::put('/{id}',[CategoryController::class,'Updated']);
+        Route::delete('/{id}',[CategoryController::class,'Deleted']);
     });
 });

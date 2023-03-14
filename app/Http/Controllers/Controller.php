@@ -28,14 +28,6 @@ class Controller extends BaseController
         ], 201);
     }
 
-    public function responseDeleteSuccess($message='')
-    {
-        return response()->json([
-            "status"    => "failed",
-            "message"   => $message
-        ], 204);
-    }
-
     public function responseFailed($response,$message='')
     {
         return response()->json([
