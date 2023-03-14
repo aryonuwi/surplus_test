@@ -4,6 +4,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ProductController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -28,4 +30,9 @@ Route::prefix('v1')->group(function(){
         Route::put('/{id}',[CategoryController::class,'Updated']);
         Route::delete('/{id}',[CategoryController::class,'Deleted']);
     });
+
+    Route::prefix('product')->group(function(){
+        Route::post('',[ProductController::class,'Created']);
+    });
+
 });
