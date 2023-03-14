@@ -62,6 +62,7 @@ class CategoryController extends Controller
         if(!is_numeric($id)){
             return $this->responseFailed(['Id is failed']);
         }
+
         if ($validate->fails()) {
            return $this->responseFailed($validate->errors()->all());
         }

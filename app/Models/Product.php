@@ -49,4 +49,11 @@ class Product extends Model
                     ->insert($data);
     }
 
+    public function UpdatedData($id,$data)
+    {
+        return DB::table('product')
+                    ->where('id', $id)
+                    ->update($data);
+    }
+
 }
