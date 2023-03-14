@@ -21,8 +21,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::prefix('v1')->group(function(){
-    // Route::get('/category',[CategoryController::class,'List']);
     Route::prefix('category')->group(function(){
         Route::get('',[CategoryController::class,'List']);
+        Route::post('',[CategoryController::class,'Created']);
     });
 });

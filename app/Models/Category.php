@@ -18,4 +18,10 @@ class Category extends Model
                     ->get()
                     ->all();
     }
+
+    public function add($data)
+    {
+        return DB::table('category')
+                    ->insertGetId($data);
+    }
 }

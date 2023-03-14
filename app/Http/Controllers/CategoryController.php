@@ -5,8 +5,7 @@ use App\Models\Category;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
-
-
+use Illuminate\Support\Facades\Validator;
 
 class CategoryController extends Controller
 {
@@ -25,7 +24,25 @@ class CategoryController extends Controller
 
     public function Created(Request $request)
     {
+        $validate = Validator::make($request->all(),[
+            "name"=>"required"
+        ]);
 
+        if ($validate->fails()) {
+           return $this->responseFailed($validate->errors()->all());
+        }
+        $data = [
+            'name' => $request->input('name'),
+            'enabel' => 1,
+        ];
+
+        $respons =  $this->MdlCategory->add($data);
+
+        if(is_int($respons)){
+            return $this->responseSuccess(['Id'=>$respons,'name'=>$data['name']],'Success Created Category','created');
+        }else{
+            return $this->responseFailed(['Created failed']);
+        }
     }
 
     public function Updated($id, Request $request)
