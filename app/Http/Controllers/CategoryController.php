@@ -55,7 +55,27 @@ class CategoryController extends Controller
 
     public function Updated($id, Request $request)
     {
+        $validate = Validator::make($request->all(),[
+            "name"=>"required"
+        ]);
 
+        if(!is_numeric($id)){
+            return $this->responseFailed(['Id is failed']);
+        }
+        if ($validate->fails()) {
+           return $this->responseFailed($validate->errors()->all());
+        }
+
+        $data = [
+            'name'=>$request->input('name')
+        ];
+        $respons = $this->MdlCategory->UpdateData($id,$data);
+
+        if(is_int($respons)){
+            return $this->responseSuccess(['Id'=>$respons,'name'=>$data['name']],'Success updated ','update');
+        }else{
+            return $this->responseFailed(['updated failed']);
+        }
     }
 
     public function Deleted($id, Request $request)

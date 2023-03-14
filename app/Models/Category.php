@@ -34,4 +34,12 @@ class Category extends Model
         return DB::table('category')
                     ->insertGetId($data);
     }
+
+    public function UpdateData($id, $data)
+    {
+        return DB::table('category')
+                    ->where('id', $id)
+                    ->update($data);
+    }
+
 }
