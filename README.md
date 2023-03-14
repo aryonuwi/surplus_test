@@ -1,3 +1,41 @@
+# Surplus Test - Aryo nurwanto w
+
+## Requirment
+- [PHP V8.1.5](https://www.php.net/)
+- [Mysql](https://www.mysql.com/)
+
+## Framework 
+- [Laravel 10](https://laravel.com/)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
 <p align="center">
