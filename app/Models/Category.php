@@ -19,7 +19,17 @@ class Category extends Model
                     ->all();
     }
 
-    public function add($data)
+    public function GetCategory($id)
+    {
+        return DB::table('category')
+        ->select('id','name')
+        ->where('id',$id)
+        ->where('enabel',1)
+        ->get()
+        ->first();
+    }
+
+    public function Add($data)
     {
         return DB::table('category')
                     ->insertGetId($data);

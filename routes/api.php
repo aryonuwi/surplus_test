@@ -23,6 +23,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::prefix('v1')->group(function(){
     Route::prefix('category')->group(function(){
         Route::get('',[CategoryController::class,'List']);
+        Route::get('/{id}',[CategoryController::class,'Singel']);
         Route::post('',[CategoryController::class,'Created']);
     });
 });

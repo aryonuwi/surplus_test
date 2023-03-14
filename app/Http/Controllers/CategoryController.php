@@ -18,8 +18,16 @@ class CategoryController extends Controller
         return $this->responseSuccess($category_list,'Berikut list category');
     }
 
-    public function Singel($id,Request $request){
-
+    public function Singel($id, Request $request){
+        if(!is_int($id)){
+            return $this->responseFailed([''],'Periksa kembali data yang anda input');
+        }
+        $category = $this->MdlCategory->GetCategory($id);
+        if(!empty($category)){
+            return $this->responseSuccess($category);
+        }else{
+            return $this->responseFailed(['Data tidak dapat di temukan'],'notfound');
+        }
     }
 
     public function Created(Request $request)
