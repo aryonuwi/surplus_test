@@ -10,10 +10,37 @@ class Product extends Model
 {
     use HasFactory;
 
-    public function Add($data)
+    public function GetAll()
     {
         return DB::table('product')
-                    ->insertGetId($data);
+                    ->select('id','name','Description')
+                    ->where('enabel',1)
+                    ->get()
+                    ->all();
+    }
+
+    public function GetProduct($id)
+    {
+        return DB::table('product')
+                    ->select('id','name','Description')
+                    ->where('id',$id)
+                    ->where('enabel',1)
+                    ->get()
+                    ->first();
+
+    }
+
+    public function GetProductRelatedToCategory($product_id)
+    {
+        return DB::table('category_product')
+                    ->join('category','category_product.category_id','=','category.id')
+                    ->select(
+                        'category.id',
+                        'category.name'
+                    )
+                    ->where('category_product.product_id',$product_id)
+                    ->get()
+                    ->all();
     }
 
     public function AddCategoryToProduct($data)

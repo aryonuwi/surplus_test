@@ -15,6 +15,20 @@ class ProductController extends Controller
         $this->MdlProduct = new Product();
     }
 
+    public function List(Request $request)
+    {
+        $product_list = $this->MdlProduct->GetAll();
+        return $this->responseSuccess($category_list,'Berikut list category');
+    }
+
+    public function Singel($id,Request $request)
+    {
+        $product = $this->MdlProduct->GetProduct($id);
+        $product->category = $this->MdlProduct->GetProductRelatedToCategory($id);
+
+        return $this->responseSuccess($product,'Berikut list category');
+    }
+
     public function Created(Request $request)
     {
         $validate = Validator::make($request->all(),[

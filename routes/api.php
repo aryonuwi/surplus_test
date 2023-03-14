@@ -32,6 +32,8 @@ Route::prefix('v1')->group(function(){
     });
 
     Route::prefix('product')->group(function(){
+        Route::get('',[ProductController::class,'List']);
+        Route::get('/{id}',[ProductController::class,'Singel']);
         Route::post('',[ProductController::class,'Created']);
     });
 
