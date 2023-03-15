@@ -85,21 +85,25 @@ class ProductController extends Controller
         ];
 
         $updated_product = $this->MdlProduct->UpdatedData($id, $data);
-
         if(is_int($updated_product)){
-            // $relation_data = [];
-            // foreach($request->category_id as $index => $category_id){
-            //     $relation_data[$index]['category_id'] = $category_id;
-            //     $relation_data[$index]['product_id'] = $ins_product;
-            // }
-            // $relation_insert = $this->MdlProduct->AddCategoryToProduct($relation_data);
-
-            // if($relation_insert){
+            $get_product_category_exist = $this->MdlProduct->GetCategoryIdInProductCategoryExist($id);
+            foreach($get_product_category_exist as $index=>$category_id){
+                $category_array[$index] = $category_id;
+                // if (!in_array($category_id, $request->category_id)){
+                //     $this->MdlProduct->DeletedProductCategoryExist($id,$category_id);
+                // }
+            }
+            $relation_data = [];
+            foreach($request->category_id  as $index => $category_id){
+                if(!in_array($category_id,$category_array)){
+                    $relation_data[$index]['category_id'] = $category_id;
+                    $relation_data[$index]['product_id'] = $id;
+                }
+            }
+            if(!empty($relation_data)){
+                $this->MdlProduct->AddCategoryToProduct($relation_data);
+            }
             return $this->responseSuccess(['Id'=>$id,'name'=>$data['name']],'Success updated ','update');
-            // return $this->responseSuccess(['Id'=>$ins_product,'name'=>$data['name']],'Success Created Category','created');
-            // }else{
-            //     return $this->responseFailed(['Failed related with category']);
-            // }
         }else{
             return $this->responseFailed(['Created failed']);
         }
@@ -108,17 +112,13 @@ class ProductController extends Controller
     public function Deleted($id, Request $request)
     {
         $category = $this->MdlProduct->GetProduct($id);;
-
         if(empty($category)){
             return $this->responseFailed([],'notfound');
         }
-
         $data = [
             'enabel'=>'0'
         ];
-
         $respons = $this->MdlProduct->UpdatedData($id, $data);
-
         if($respons){
             return $this->responseSuccess(['Id'=>$id,'name'=>$category->name],'Success Deleted ','deleted');
         }else{

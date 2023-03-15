@@ -30,6 +30,20 @@ class Product extends Model
 
     }
 
+    public function GetCategoryIdInProductCategoryExist($product_id)
+    {
+        return DB::table('category_product')
+                ->select('category_id')
+                ->where('product_id',$product_id)
+                ->get()
+                ->all();
+    }
+
+    public function DeletedProductCategoryExist($product_id, $category_id)
+    {
+        DB::table('category_product')->where('product_id', $product_id)->where('category_id', $category_id)->delete();
+    }
+
     public function GetProductRelatedToCategory($product_id)
     {
         return DB::table('category_product')

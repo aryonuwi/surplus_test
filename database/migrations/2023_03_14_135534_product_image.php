@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('category_image', function (Blueprint $table) {
+        Schema::create('product_image', function (Blueprint $table) {
             $table->foreignId('product_id');
             $table->foreignId('image_id');
         });
