@@ -70,4 +70,10 @@ class Product extends Model
                     ->update($data);
     }
 
+    public function Add($data)
+    {
+        return DB::table('product')
+                    ->insertGetId($data);
+    }
+
 }

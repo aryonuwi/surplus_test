@@ -54,8 +54,35 @@ class Image extends Model
                         'image.file'
                     )
                     ->where('product_image.product_id',$product_id)
+                    ->where('image.enabel',1)
                     ->get()
                     ->all();
+    }
+
+    public function GetAll()
+    {
+        return DB::table('image')
+                    ->select('id','name','file')
+                    ->where('enabel',1)
+                    ->get()
+                    ->all();
+    }
+
+    public function GetImage($id)
+    {
+        return DB::table('image')
+                ->select('id','name','file')
+                ->where('id',$id)
+                ->where('enabel',1)
+                ->get()
+                ->first();
+    }
+
+    public function UpdateData($id,$data)
+    {
+        return DB::table('image')
+                    ->where('id', $id)
+                    ->update($data);
     }
 
 }

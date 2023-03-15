@@ -19,9 +19,6 @@ class CategoryController extends Controller
     }
 
     public function Singel($id, Request $request){
-        if(!is_int($id)){
-            return $this->responseFailed([''],'Periksa kembali data yang anda input');
-        }
         $category = $this->MdlCategory->GetCategory($id);
         if(!empty($category)){
             return $this->responseSuccess($category);
@@ -58,22 +55,18 @@ class CategoryController extends Controller
         $validate = Validator::make($request->all(),[
             "name"=>"required"
         ]);
-
         if(!is_numeric($id)){
             return $this->responseFailed(['Id is failed']);
         }
-
         if ($validate->fails()) {
            return $this->responseFailed($validate->errors()->all());
         }
-
         $data = [
             'name'=>$request->input('name')
         ];
         $respons = $this->MdlCategory->UpdateData($id,$data);
-
-        if(is_int($respons)){
-            return $this->responseSuccess(['Id'=>$respons,'name'=>$data['name']],'Success updated ','update');
+        if($respons){
+            return $this->responseSuccess(['Id'=>$id,'name'=>$data['name']],'Success updated ','update');
         }else{
             return $this->responseFailed(['updated failed']);
         }
@@ -82,17 +75,13 @@ class CategoryController extends Controller
     public function Deleted($id, Request $request)
     {
         $category = $this->MdlCategory->GetCategory($id);;
-
         if(empty($category)){
             return $this->responseFailed([],'notfound');
         }
-
         $data = [
             'enabel'=>'0'
         ];
-
         $respons = $this->MdlCategory->UpdateData($id,$data);
-
         if($respons){
             return $this->responseSuccess(['Id'=>$id,'name'=>$category->name],'Success Deleted ','deleted');
         }else{

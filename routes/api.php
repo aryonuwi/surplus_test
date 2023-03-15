@@ -47,9 +47,8 @@ Route::prefix('v1')->group(function () {
     });
 
     Route::prefix('image')->group(function () {
-        Route::get('', [ImagesController::class, 'Upload']);
-        Route::get('/{id}', [ImagesController::class, 'Upload']);
-        Route::post('', [ImagesController::class, 'Upload']);
-        Route::delete('', [ImagesController::class, 'Upload']);
+        Route::get('', [ImagesController::class, 'List']);
+        Route::post('', [ImagesController::class, 'Created']);
+        Route::delete('/{id}', [ImagesController::class, 'Deleted']);
     });
 });

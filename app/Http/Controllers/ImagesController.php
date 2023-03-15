@@ -16,17 +16,77 @@ class ImagesController extends Controller
         $this->MdlImages = new Image();
     }
 
+    public function List(Request $request)
+    {
+        $GetImages = $this->MdlImages->GetAll();
+        $images = [];
+        if(count($GetImages)>0){
+            $images = [];
+            foreach($GetImages as $index=>$image){
+                $images[$index]['id'] = $image->id;
+                $images[$index]['image_name'] = $image->name;
+                $images[$index]['image_url'] = Storage::disk('public')->url($image->file);
+            }
+            $images = $images;
+        }
+        return $this->responseSuccess($images,'success');
+    }
+
+    public function Created(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'image' => 'required|image:jpeg,png,jpg,gif,svg|max:2048'
+        ]);
+        if ($validator->fails()) {
+            return $this->responseFailed('','failed');
+        }
+        $UploadFolder = 'product';
+        $Image = $request->file('image');
+        $ImageUploadedPath = $Image->store($UploadFolder, 'public');
+        $DataIage = [
+            'name'=> basename($ImageUploadedPath),
+            'file'=> $ImageUploadedPath,
+            'enabel'=>1
+        ];
+        $AddImageDb = $this->MdlImages->Add($DataIage);
+        if(is_int($AddImageDb)){
+            $uploadedImageResponse = array(
+                "image_name" => basename($ImageUploadedPath),
+                "image_url" => Storage::disk('public')->url($ImageUploadedPath),
+                "mime" => $Image->getClientMimeType()
+            );
+            return $this->responseSuccess($uploadedImageResponse,'success');
+        }else{
+            return $this->responseFailed('Gambar tidak dapat di simpan','failed');
+        }
+    }
+
+    public function Deleted($id,Request $request)
+    {
+        $category = $this->MdlImages->GetImage($id);;
+        if(empty($category)){
+            return $this->responseFailed([],'notfound');
+        }
+        $data = [
+            'enabel'=>'0'
+        ];
+        $respons = $this->MdlImages->UpdateData($id,$data);
+        if($respons){
+            return $this->responseSuccess(['Id'=>$id,'name'=>$category->name],'Success Deleted ','deleted');
+        }else{
+            return $this->responseFailed(['deleted failed']);
+        }
+    }
+
     public function ProductUpload(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'product_id'=>'required|numeric',
             'image' => 'required|image:jpeg,png,jpg,gif,svg|max:2048'
         ]);
-
         if ($validator->fails()) {
             return $this->responseFailed('','failed');
         }
-
         $UploadFolder = 'product';
         $Image = $request->file('image');
         $ImageUploadedPath = $Image->store($UploadFolder, 'public');
