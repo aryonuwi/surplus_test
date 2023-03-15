@@ -41,8 +41,8 @@ Route::prefix('v1')->group(function () {
 
         Route::prefix('image')->group(function () {
             Route::post('/upload', [ImagesController::class, 'ProductUpload']);
-            Route::post('/add', [ImagesController::class, 'Upload']);
-            Route::delete('', [ImagesController::class, 'Upload']);
+            Route::post('/add', [ImagesController::class, 'AddImageOnProduct']);
+            Route::delete('/remove', [ImagesController::class, 'RemoveImageOnProduct']);
         });
     });
 

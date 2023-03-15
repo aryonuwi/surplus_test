@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Category;
+use App\Models\Image;
 use App\Models\Product;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use stdClass;
 
 class ProductController extends Controller
 {
@@ -13,6 +16,7 @@ class ProductController extends Controller
     {
         $this->MdlCategory = new Category();
         $this->MdlProduct = new Product();
+        $this->MdlImages = new Image();
     }
 
     public function List(Request $request)
@@ -25,6 +29,18 @@ class ProductController extends Controller
     {
         $product = $this->MdlProduct->GetProduct($id);
         $product->category = $this->MdlProduct->GetProductRelatedToCategory($id);
+        $GetImages = $this->MdlImages->GetProductRelatedToImage($id);
+
+        $product->images = [];
+        if(count($GetImages)>0){
+            $images = [];
+            foreach($GetImages as $index=>$image){
+                $images[$index]['id'] = $image->id;
+                $images[$index]['image_name'] = $image->name;
+                $images[$index]['image_url'] = Storage::disk('public')->url($image->file);
+            }
+            $product->images = $images;
+        }
         return $this->responseSuccess($product,'Berikut list category');
     }
 
@@ -89,9 +105,9 @@ class ProductController extends Controller
             $get_product_category_exist = $this->MdlProduct->GetCategoryIdInProductCategoryExist($id);
             foreach($get_product_category_exist as $index=>$category_id){
                 $category_array[$index] = $category_id;
-                // if (!in_array($category_id, $request->category_id)){
-                //     $this->MdlProduct->DeletedProductCategoryExist($id,$category_id);
-                // }
+                if (!in_array($category_id, $request->category_id)){
+                    $this->MdlProduct->DeletedProductCategoryExist($id,$category_id);
+                }
             }
             $relation_data = [];
             foreach($request->category_id  as $index => $category_id){

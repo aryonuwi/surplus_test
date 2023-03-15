@@ -19,7 +19,7 @@ class ImagesController extends Controller
     public function ProductUpload(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'product_id'=>'required',
+            'product_id'=>'required|numeric',
             'image' => 'required|image:jpeg,png,jpg,gif,svg|max:2048'
         ]);
 
@@ -55,6 +55,50 @@ class ImagesController extends Controller
             }
         }else{
             return $this->responseFailed('Gambar tidak dapat di simpan','failed');
+        }
+    }
+
+    public function AddImageOnProduct(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'product_id'=>'required|numeric',
+            'image_id' => 'required|numeric'
+        ]);
+        if ($validator->fails()) {
+            return $this->responseFailed('','failed');
+        }
+        $DataDonotExist = $this->MdlImages->ProductImageDonotExist($request->input('product_id'),$request->input('image_id'));
+        if($DataDonotExist){
+            $ProductImagesData =[
+                'product_id'=> $request->input('product_id'),
+                'image_id'=> $request->input('image_id')
+            ];
+            $AddImageProduct = $this->MdlImages->ProductImages($ProductImagesData);
+            if($AddImageProduct){
+                return $this->responseSuccess('','Image berhasil tersimpan dalam product');
+            }else{
+                return $this->responseFailed('','failed');
+            }
+        }else{
+            return $this->responseSuccess('','Image sudah tersimpan dalam product');
+        }
+    }
+
+    public function RemoveImageOnProduct(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'product_id'=>'required|numeric',
+            'image_id' => 'required|numeric'
+        ]);
+        if ($validator->fails()) {
+            return $this->responseFailed('','failed');
+        }
+        $DataDonotExist = $this->MdlImages->ProductImageExist($request->input('product_id'),$request->input('image_id'));
+        if($DataDonotExist){
+            $ImageProductRemove = $this->MdlImages->DeletedProductCategoryExist($request->input('product_id'),$request->input('image_id'));
+            return $this->responseSuccess('','Image berhasil terhapus dalam product');
+        }else{
+            return $this->responseSuccess('','Image sudah terhapus dalam product');
         }
     }
 }
